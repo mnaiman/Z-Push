@@ -240,6 +240,20 @@ class CalDAVClient {
 
 
 	/**
+	 * Percent-encode a DAV path for HTTP while preserving slash separators.
+	 * Internal hrefs are stored decoded (see rawurldecode in HrefForProp/FindCalendars).
+	 */
+	private function EncodeDavPath($path) {
+		$query = '';
+		if (($qpos = strpos($path, '?')) !== false) {
+			$query = substr($path, $qpos);
+			$path = substr($path, 0, $qpos);
+		}
+		return str_replace(rawurlencode('/'), '/', rawurlencode($path)) . $query;
+	}
+
+
+	/**
 	 * Send a request to the server
 	 *
 	 * @param string $url The URL to make the request to
@@ -251,6 +265,7 @@ class CalDAVClient {
 
 		if ( !isset($url) ) $url = $this->base_url;
 		$url = preg_replace('{^https?://[^/]+}', '', $url);
+		$url = $this->EncodeDavPath($url);
 		$url = $this->server . $url;
 
 		curl_setopt($this->curl, CURLOPT_URL, $url);
