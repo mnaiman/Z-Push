@@ -1,6 +1,6 @@
 FROM alpine:3.24
 
-ENV PHP_VERSION=85
+ENV PHP_VERSION=83
 ENV PHP_INI_DIR=/etc/php${PHP_VERSION}
 
 WORKDIR /usr/share/z-push
@@ -39,9 +39,7 @@ RUN apk update && apk add --no-cache \
     less \
     nano \
     nginx \
-    libawl-php \
     php${PHP_VERSION} \
-    php${PHP_VERSION}-cli \
     php${PHP_VERSION}-curl \
     php${PHP_VERSION}-fpm \
     php${PHP_VERSION}-iconv \
